@@ -4,7 +4,10 @@ import com.example.etraveli.dto.BinListResponseDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -14,6 +17,7 @@ public class BinListApiClientImpl implements BinListApiClient {
     String acceptVersion = "3";
     RestTemplate restTemplate = new RestTemplate();
     @Override
+    @Retryable(retryFor = HttpClientErrorException.TooManyRequests.class, maxAttempts = 5, backoff = @Backoff(delay = 1200000))
     public String makeCall(String bin) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept-Version", acceptVersion);

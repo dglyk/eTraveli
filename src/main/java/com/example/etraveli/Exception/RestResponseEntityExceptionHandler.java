@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.HttpClientErrorException;
 
 
-@ControllerAdvice
+/*@ControllerAdvice
 public class RestResponseEntityExceptionHandler {
     @ExceptionHandler(value
             = HttpClientErrorException.TooManyRequests.class)
@@ -20,4 +20,4 @@ public class RestResponseEntityExceptionHandler {
         return new ErrorResponseDTO(
                 HttpStatus.TOO_MANY_REQUESTS.value(), message);
     }
-}
+}*/

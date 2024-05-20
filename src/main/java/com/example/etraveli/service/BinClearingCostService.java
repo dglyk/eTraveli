@@ -5,4 +5,6 @@ import com.example.etraveli.dto.CardInfoDTO;
 public interface BinClearingCostService {
 
     CardInfoDTO findClearingCostByCountryCode(String binNumber);
+
+    CardInfoDTO asyncFindClearingCostByCountryCode(String binNumber);
 }

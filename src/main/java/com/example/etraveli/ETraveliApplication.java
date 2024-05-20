@@ -12,14 +12,20 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.time.Duration;
+import java.util.concurrent.Executor;
 
 @SpringBootApplication
 @EnableCaching
 @EnableAsync
+@EnableRetry
+@EnableDiscoveryClient
 public class ETraveliApplication {
 
     private static final Logger log = LoggerFactory.getLogger(
@@ -39,6 +45,16 @@ public class ETraveliApplication {
         return new RequestQueue(5, Duration.ofHours(1));
     }
 
+    @Bean(name = "asyncExecutor")
+    public Executor asyncExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(10);
+        executor.setMaxPoolSize(10);
+        executor.setQueueCapacity(100);
+        executor.setThreadNamePrefix("AsynchThread-");
+        executor.initialize();
+        return executor;
+    }
 
     @Bean
     public CommandLineRunner demo(ClearingCostRepository repository) {

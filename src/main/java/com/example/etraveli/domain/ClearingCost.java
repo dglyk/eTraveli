@@ -4,13 +4,15 @@ package com.example.etraveli.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
 @Setter
-public class ClearingCost {
+public class ClearingCost implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
